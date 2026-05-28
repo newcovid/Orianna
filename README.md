@@ -1,19 +1,6 @@
 # Orianna
 
-英雄联盟对局数据分析桌面客户端。基于 Tauri v2 构建，Rust 后端负责 LCU 进程探测与 HTTP 代理，TypeScript 前端承载全部业务逻辑。
-
-## 技术栈
-
-| 层级 | 技术 |
-|---|---|
-| 桌面框架 | Tauri v2 |
-| 前端 | Vue 3 + TypeScript + Vite |
-| UI | Tailwind CSS v4 |
-| 图表 | ECharts (vue-echarts) |
-| 状态管理 | Pinia |
-| 路由 | Vue Router |
-| 后端 | Rust (reqwest, sysinfo, serde) |
-| 数据库 | SQLite (tauri-plugin-sql) |
+英雄联盟对局数据分析桌面客户端。
 
 ## 快速开始
 
@@ -23,18 +10,11 @@
 - [Rust](https://www.rust-lang.org/tools/install) (最新稳定版)
 - [Tauri 环境依赖](https://v2.tauri.app/start/prerequisites/)
 
-### 开发
+### 安装与运行
 
 ```bash
 npm install
-npm run tauri dev       # 完整桌面应用（前端 + Tauri 后端，热重载）
-npm run dev             # 仅前端（Vite 开发服务器，功能受限）
-```
-
-### 构建
-
-```bash
-npm run build           # 类型检查 + 生产构建
+npm run tauri dev       # 启动完整桌面应用
 npm run tauri build     # 打包为可分发的 .exe
 ```
 
@@ -55,7 +35,7 @@ Orianna 的核心特色是**插件驱动的图表系统**。你可以通过 JSON
 
 #### 推荐方式：让 AI 帮你写插件
 
-编写 JSON 配置最简单的方式是借助 AI。项目内置了一份详细的 **插件开发白皮书**（`docs/plugin_whitepaper.md`），包含了完整的字段说明、配置规则和示例。
+项目内置了一份详细的 **插件开发白皮书**（`docs/plugin_whitepaper.md`），包含了完整的字段说明、配置规则和示例。
 
 **操作步骤：**
 
@@ -70,40 +50,11 @@ Orianna 的核心特色是**插件驱动的图表系统**。你可以通过 JSON
 5. 将生成的 JSON 保存为 `.json` 文件
 6. 在 Orianna 的 **插件** 页面点击"导入"，选择该文件即可
 
-> **提示：** 白皮书中包含了 206 个可查询的数据字段、7 种图表类型、多种过滤条件，AI 可以组合出几乎无限种分析方案。
+> 白皮书中包含了 206 个可查询的数据字段、7 种图表类型、多种过滤条件，AI 可以组合出几乎无限种分析方案。
 
 #### 手动编写插件
 
-如果你熟悉 JSON 语法，也可以手动编写。插件配置由四个顶级节点组成：
-
-```json
-{
-  "manifest": {
-    "id": "my_plugin",
-    "name": "我的插件",
-    "version": "1.0.0"
-  },
-  "layout": {
-    "grid": "col-span-1",
-    "mount": ["dashboard"]
-  },
-  "dataQuery": {
-    "entity": "match_games",
-    "filters": { "limit": 20 },
-    "metrics": [
-      { "field": "kills", "aggregate": "avg", "alias": "avg_kills" }
-    ]
-  },
-  "visualization": {
-    "type": "stat-card",
-    "series": [
-      { "field": "avg_kills", "name": "平均击杀", "color": "#ef4444" }
-    ]
-  }
-}
-```
-
-完整字段说明和更多示例请参阅 [`docs/plugin_whitepaper.md`](docs/plugin_whitepaper.md)。
+如果你熟悉 JSON 语法，也可以手动编写。完整字段说明和示例请参阅 [`docs/plugin_whitepaper.md`](docs/plugin_whitepaper.md)。
 
 #### 图表类型一览
 
@@ -117,57 +68,68 @@ Orianna 的核心特色是**插件驱动的图表系统**。你可以通过 JSON
 | `stat-card` | 数值卡片 | 关键指标展示（平均 KDA、胜率） |
 | `list` | 排行榜 | TOP N 排名（最常用英雄、装备） |
 
-#### 在创意工坊中管理插件
+#### 插件管理
 
 - **插件页面**（`/plugins`）：查看、启用/禁用、导入/导出插件
 - **插件编辑器**（`/plugins/editor`）：可视化 JSON 编辑器，实时预览
-- 插件支持挂载到两个页面场景：
-  - `dashboard`：个人数据总览（单人数据源）
-  - `compare`：多人横向对比
+- 插件支持挂载到 `dashboard`（个人总览）和 `compare`（多人对比）两个页面
 
-## 项目结构
+## 免责声明
 
-```
-Orianna/
-├── src/
-│   ├── assets/            # 静态资源（英雄数据、服务器列表、内置插件）
-│   ├── components/        # 可复用 Vue 组件
-│   ├── constants/         # 游戏字典、指标定义
-│   ├── core/
-│   │   ├── api/           # LCU / Riot Client / SGP API 封装
-│   │   ├── db/            # SQLite schema 与迁移
-│   │   ├── plugins/       # 插件引擎与类型定义
-│   │   └── services/      # 同步、分析、游戏数据、游戏流程
-│   ├── layout/            # 布局组件
-│   ├── router/            # Vue Router 配置
-│   ├── store/             # Pinia 状态管理（user, plugins）
-│   └── views/             # 页面组件
-├── src-tauri/
-│   ├── icons/             # 应用图标
-│   ├── src/               # Rust 后端（lib.rs, lcu.rs, main.rs）
-│   ├── Cargo.toml
-│   └── tauri.conf.json
-├── docs/
-│   └── plugin_whitepaper.md  # 插件开发白皮书（可上传给 AI 生成插件）
-├── package.json
-└── vite.config.ts
-```
+### 知识产权声明
 
-## 开发者说明
+1. **Riot Games 相关**：Orianna 是一个独立的第三方社区工具，**与 Riot Games, Inc. 没有任何关联、授权、赞助或认可关系**。Riot Games、英雄联盟（League of Legends）、League Client（LCU）及相关标识均为 Riot Games, Inc. 的注册商标和知识产权。本项目不主张对上述商标或知识产权的任何权利。
 
-### 架构概览
+2. **游戏内容归属**：本项目中涉及的所有游戏数据（包括但不限于英雄名称、装备名称、技能名称、符文名称、游戏模式名称、图标素材等）的知识产权完全归属于 Riot Games, Inc. 及其关联公司。本项目仅在合理使用的范围内对上述内容进行引用和展示。
 
-**Rust 层**（`src-tauri/src/`）暴露三个 Tauri 命令：
+3. **图标与素材**：应用内使用的游戏相关图标、图片素材均来源于 Riot Games 官方公开资源（如 Data Dragon、CommunityDragon 等）。如 Riot Games 要求移除任何素材，将在收到通知后立即处理。
 
-- `get_lcu_auth` — 扫描 `LeagueClientUx` 进程，从启动参数提取 auth 端口/token/区域
-- `lcu_request` / `rc_request` — 本地 HTTPS 代理，连接 LCU 和 Riot Client（自签证书）
-- `proxy_request` — 通用 HTTP 代理，用于调用 Riot SGP 端点，绕过 CORS
+### 使用性质声明
 
-**数据层**：单 SQLite 数据库，`match_games` 表约 215 列（206 个原始统计 + 9 个预计算指标）。Schema 迁移仅通过 `ALTER TABLE ... ADD COLUMN` 追加。
+4. **非商业用途**：本项目是一个开源的免费社区工具，**不以任何形式进行商业盈利**。开发者不通过本项目销售任何商品、服务、虚拟物品或广告位，也不接受任何形式的捐赠或付费。
 
-**同步服务**（`src/core/services/sync.ts`）：从 SGP 分页拉取历史对局并插入数据库，遇到 401 自动刷新 token 并重试。
+5. **仅读取公开数据**：本工具仅通过 Riot Games 官方提供的 LCU 本地 API 和 SGP（Server-side Gateway Protocol）接口读取用户**自身账号**的对局历史数据。本工具**不会**：
+   - 修改、注入或篡改游戏客户端或内存
+   - 绕过游戏反作弊系统（如 Vanguard）
+   - 访问其他玩家的非公开数据
+   - 自动化游戏操作（外挂/脚本）
+   - 修改网络请求内容以获取不正当游戏优势
 
-**插件引擎**（`src/core/plugins/engine.ts`）：将声明式 JSON 配置编译为参数化 SQL 查询，使用字段白名单防止 SQL 注入，输出 ECharts 配置对象。
+6. **数据来源合规**：所有对局数据均通过 Riot Games 官方授权的 API 端点获取，数据传输使用标准 HTTPS 协议。本工具不抓取、爬取或通过非官方渠道获取任何游戏数据。
+
+### 用户责任声明
+
+7. **用户自行承担风险**：用户在使用本工具前，应自行了解并遵守 [Riot Games 服务条款](https://www.riotgames.com/en/terms-of-service) 及《英雄联盟》用户协议。因使用本工具而产生的任何账号封禁、限制或其他处罚，开发者不承担任何责任。
+
+8. **第三方 AI 工具**：本 README 中提及的 AI 对话工具（豆包、DeepSeek、ChatGPT、Kimi 等）仅为使用建议，**不构成任何推荐或背书**。用户使用第三方 AI 服务时应遵守其各自的使用条款和隐私政策。开发者不对第三方 AI 服务生成内容的准确性、合规性或安全性承担责任。
+
+9. **插件内容责任**：创意工坊允许用户导入自定义 JSON 插件配置。用户对自己创建、导入或分享的插件内容负全部责任。开发者不对第三方插件的内容、功能或潜在风险承担责任。
+
+### 免责与责任限制
+
+10. **"按现状"提供**：本工具按 **"现状"（AS IS）** 和 **"可用"（AS AVAILABLE）** 基础提供，**不附带任何形式的明示或暗示担保**，包括但不限于对适销性、特定用途适用性、不侵权的默示担保。开发者不保证本工具无错误、不间断、安全或持续可用。
+
+11. **责任限制**：在适用法律允许的最大范围内，开发者**不对以下任何损害承担责任**：因使用或无法使用本工具导致的直接、间接、附带、特殊、惩罚性或后果性损害；数据丢失或损坏；业务中断；或任何其他商业损失，无论开发者是否已被告知此类损害的可能性。
+
+12. **Riot Games 政策变更**：Riot Games 可能随时修改其 API 使用政策、服务条款或对第三方工具的立场。若 Riot Games 要求本项目下架、修改或停止分发，开发者将积极配合。开发者不对因 Riot Games 政策变更导致本工具功能失效或被终止服务承担责任。
+
+### 数据与隐私声明
+
+13. **本地数据存储**：本工具所有数据（对局记录、插件配置、用户设置）均存储在用户本地设备上，**不会上传至任何远程服务器**。开发者不收集、存储或传输任何用户数据。
+
+14. **无遥测与追踪**：本工具不包含任何遥测、数据采集、用户行为追踪或分析组件。
+
+15. **LCU 认证信息**：本工具在运行时需要读取 League Client 的本地认证端口和令牌以建立连接。这些凭据**仅在本地使用**，不会被存储或传输到外部。
+
+### 开源声明
+
+16. **MIT 许可证**：本项目基于 MIT 许可证开源分发。MIT 许可证允许任何人自由使用、修改和分发本软件的源代码，但需保留原始版权声明和许可证文本。MIT 许可证**不提供任何担保**，使用者需自行承担所有风险。
+
+17. **贡献者协议**：向本项目提交代码或内容的贡献者，同意其贡献内容同样适用 MIT 许可证。贡献者对其提交的代码不作任何担保声明。
+
+---
+
+**最终声明**：使用本工具即表示您已阅读、理解并同意上述全部声明条款。如果您不同意上述任何条款，请勿使用本工具。本项目的开发者保留随时更新上述声明的权利，恕不另行通知。
 
 ## 协议
 
