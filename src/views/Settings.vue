@@ -129,7 +129,53 @@
                 </p>
             </div>
         </div>
-        
+
+        <!-- 卡片 5：关于 Orianna -->
+        <div class="ui-card p-6 flex flex-col gap-4 mt-2">
+            <h3 class="font-bold flex items-center gap-2 text-lg text-slate-800 dark:text-gray-200">
+                <Info class="w-5 h-5 text-blue-500" /> 关于 Orianna
+            </h3>
+
+            <div class="flex flex-col gap-3">
+                <!-- 版本信息 -->
+                <div class="flex items-center justify-between p-4 rounded-xl bg-slate-50 dark:bg-black/20 border border-slate-100 dark:border-gray-800/60">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-sm shadow-md">O</div>
+                        <div>
+                            <div class="font-bold text-slate-800 dark:text-gray-200">Orianna</div>
+                            <div class="text-xs text-slate-500">英雄联盟对局数据分析工具</div>
+                        </div>
+                    </div>
+                    <span class="text-xs font-mono px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-500/20">v{{ appVersion }}</span>
+                </div>
+
+                <!-- 信息列表 -->
+                <div class="grid grid-cols-2 gap-2 text-sm">
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50/60 dark:bg-black/10">
+                        <span class="text-slate-500">开源仓库</span>
+                        <a href="https://github.com/newcovid/Orianna" target="_blank" class="text-indigo-600 dark:text-indigo-400 hover:underline font-medium">GitHub</a>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50/60 dark:bg-black/10">
+                        <span class="text-slate-500">开源协议</span>
+                        <span class="text-slate-700 dark:text-gray-300 font-medium">MIT License</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50/60 dark:bg-black/10">
+                        <span class="text-slate-500">技术栈</span>
+                        <span class="text-slate-700 dark:text-gray-300 font-medium">Tauri + Vue 3</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-slate-50/60 dark:bg-black/10">
+                        <span class="text-slate-500">应用标识</span>
+                        <span class="text-slate-700 dark:text-gray-300 font-mono text-xs">com.newcovid.orianna</span>
+                    </div>
+                </div>
+
+                <!-- 底部说明 -->
+                <p class="text-xs text-slate-400 leading-relaxed mt-1">
+                    Orianna 是一款由玩家独立开发的社区工具，与 Riot Games, Inc. 无任何关联。如遇到问题或有功能建议，欢迎通过 GitHub 提交 Issue。
+                </p>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -147,8 +193,13 @@ import {
     Trash2,
     CheckCircle2,
     XCircle,
-    ShieldAlert
+    ShieldAlert,
+    Info
 } from 'lucide-vue-next';
+
+// @ts-ignore — Vite JSON import
+import pkg from '../../package.json';
+const appVersion: string = pkg.version;
 
 const userStore = useUserStore();
 const fileInput = ref<HTMLInputElement | null>(null);
