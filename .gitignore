@@ -13,8 +13,6 @@ src-tauri/target/
 
 # === Tauri ===
 src-tauri/gen/schemas
-src-tauri/icons/*.ico
-src-tauri/icons/*.png
 
 # === Database ===
 *.db
