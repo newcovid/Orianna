@@ -1,0 +1,75 @@
+{
+    "manifest": {
+        "id": "recent_20_core_performance",
+        "name": "近期 20 场表现核心指标",
+        "description": "统计最近 20 场比赛的平均 KDA、击杀参与率、分均伤害与分均经济",
+        "version": "1.0.0",
+        "author": "Orianna User",
+        "tags": [
+            "数值看板",
+            "核心表现",
+            "KDA",
+            "DPM",
+            "GPM"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-2",
+        "mount": [
+            "dashboard"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "limit": 20
+        },
+        "metrics": [
+            {
+                "field": "kda",
+                "aggregate": "avg",
+                "alias": "avg_kda"
+            },
+            {
+                "field": "kill_participation_rate",
+                "aggregate": "avg",
+                "alias": "avg_kp"
+            },
+            {
+                "field": "damage_per_minute",
+                "aggregate": "avg",
+                "alias": "avg_dpm"
+            },
+            {
+                "field": "gold_per_minute",
+                "aggregate": "avg",
+                "alias": "avg_gpm"
+            }
+        ]
+    },
+    "visualization": {
+        "type": "stat-card",
+        "series": [
+            {
+                "field": "avg_kda",
+                "name": "平均 KDA",
+                "color": "#3b82f6"
+            },
+            {
+                "field": "avg_kp",
+                "name": "平均参团率",
+                "color": "#10b981"
+            },
+            {
+                "field": "avg_dpm",
+                "name": "平均分均伤害",
+                "color": "#ef4444"
+            },
+            {
+                "field": "avg_gpm",
+                "name": "平均分均金币",
+                "color": "#f59e0b"
+            }
+        ]
+    }
+}

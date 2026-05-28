@@ -1,0 +1,38 @@
+{
+  "name": "orianna",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.4",
+    "@tauri-apps/api": "^2",
+    "@tauri-apps/plugin-http": "^2.5.8",
+    "@tauri-apps/plugin-opener": "^2",
+    "@tauri-apps/plugin-sql": "^2.4.0",
+    "axios": "^1.15.2",
+    "axios-retry": "^4.5.0",
+    "echarts": "^6.0.0",
+    "lucide-vue-next": "^1.0.0",
+    "pinia": "^3.0.4",
+    "sortablejs": "^1.15.7",
+    "tailwindcss": "^4.2.4",
+    "vue": "^3.5.13",
+    "vue-echarts": "^8.0.1",
+    "vue-router": "^5.0.6"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2",
+    "@types/node": "^25.6.0",
+    "@types/sortablejs": "^1.15.9",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "~5.6.2",
+    "vite": "^6.0.3",
+    "vue-tsc": "^2.1.10"
+  }
+}

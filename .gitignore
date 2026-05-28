@@ -1,0 +1,56 @@
+# === Node.js ===
+node_modules/
+dist/
+dist-ssr/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# === Rust / Cargo ===
+src-tauri/target/
+
+# === Tauri ===
+src-tauri/gen/schemas
+src-tauri/icons/*.ico
+src-tauri/icons/*.png
+
+# === Database ===
+*.db
+*.db-shm
+*.db-wal
+
+# === Environment ===
+.env
+.env.*
+!.env.example
+
+# === IDE ===
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+
+# === OS ===
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# === Logs ===
+logs/
+*.log
+
+# === Claude Code ===
+.claude/settings.local.json
+
+# === Misc ===
+src-tauri/2

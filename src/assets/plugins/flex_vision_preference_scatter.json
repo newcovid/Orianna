@@ -1,0 +1,57 @@
+{
+    "manifest": {
+        "id": "flex_vision_preference_scatter",
+        "name": "灵活排位：真假眼放置偏好",
+        "description": "统计最近10场灵活排位中，平均放置控制守卫（真眼）与隐形守卫（假眼）的分布关系。",
+        "version": "1.0.0",
+        "author": "Orianna Developer",
+        "tags": [
+            "视野",
+            "灵活排位",
+            "对比"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-2",
+        "mount": [
+            "compare"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "limit": 10,
+            "queueId": 440
+        },
+        "metrics": [
+            {
+                "field": "control_wards_placed",
+                "aggregate": "avg",
+                "alias": "avg_control"
+            },
+            {
+                "field": "stealth_wards_placed",
+                "aggregate": "avg",
+                "alias": "avg_stealth"
+            }
+        ]
+    },
+    "visualization": {
+        "type": "scatter",
+        "compareMode": "aggregate",
+        "xAxis": {
+            "field": "avg_stealth",
+            "format": "value"
+        },
+        "yAxis": {
+            "field": "avg_control"
+        },
+        "series": [
+            {
+                "field": "avg_control",
+                "name": "视野放置习惯",
+                "color": "#8b5cf6"
+            }
+        ]
+    }
+}

@@ -1,0 +1,88 @@
+{
+    "manifest": {
+        "id": "global_performance_radar",
+        "name": "综合能力画像",
+        "description": "基于最近 20 场对局，从战斗、发育、视野、资源、生存五个维度评估玩家水平",
+        "version": "1.0.0",
+        "author": "Orianna Team",
+        "tags": [
+            "雷达图",
+            "综合能力",
+            "首页推荐"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-1",
+        "mount": [
+            "dashboard"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "limit": 20
+        },
+        "metrics": [
+            {
+                "field": "kda",
+                "aggregate": "avg",
+                "alias": "战斗"
+            },
+            {
+                "field": "gold_per_minute",
+                "aggregate": "avg",
+                "alias": "发育"
+            },
+            {
+                "field": "vision_score_per_minute",
+                "aggregate": "avg",
+                "alias": "视野"
+            },
+            {
+                "field": "damage_dealt_to_objectives",
+                "aggregate": "avg",
+                "alias": "资源"
+            },
+            {
+                "field": "kill_participation_rate",
+                "aggregate": "avg",
+                "alias": "团队"
+            }
+        ]
+    },
+    "visualization": {
+        "type": "radar",
+        "series": [
+            {
+                "field": "战斗",
+                "name": "KDA",
+                "color": "#f87171",
+                "max": 10
+            },
+            {
+                "field": "发育",
+                "name": "分均金币",
+                "color": "#fbbf24",
+                "max": 1500
+            },
+            {
+                "field": "视野",
+                "name": "分均视野",
+                "color": "#60a5fa",
+                "max": 2.5
+            },
+            {
+                "field": "资源",
+                "name": "战略点伤害",
+                "color": "#a78bfa",
+                "max": 15000
+            },
+            {
+                "field": "团队",
+                "name": "参团率",
+                "color": "#34d399",
+                "max": 1
+            }
+        ]
+    }
+}

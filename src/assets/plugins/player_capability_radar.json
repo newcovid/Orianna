@@ -1,0 +1,89 @@
+{
+    "manifest": {
+        "id": "player_capability_radar",
+        "name": "五维综合能力对比",
+        "description": "从KDA、经济、伤害、参团率和视野五个维度，横向对比多位玩家的综合竞技表现。",
+        "version": "1.0.0",
+        "author": "Orianna Analytics",
+        "tags": [
+            "雷达图",
+            "综合素质",
+            "多人对比"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-1",
+        "mount": [
+            "compare"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "limit": 20
+        },
+        "metrics": [
+            {
+                "field": "kda",
+                "aggregate": "avg",
+                "alias": "avg_kda"
+            },
+            {
+                "field": "gold_per_minute",
+                "aggregate": "avg",
+                "alias": "avg_gpm"
+            },
+            {
+                "field": "total_damage_dealt_to_champions",
+                "aggregate": "avg",
+                "alias": "avg_damage"
+            },
+            {
+                "field": "kill_participation_rate",
+                "aggregate": "avg",
+                "alias": "avg_kp"
+            },
+            {
+                "field": "vision_score",
+                "aggregate": "avg",
+                "alias": "avg_vision"
+            }
+        ]
+    },
+    "visualization": {
+        "type": "radar",
+        "compareMode": "aggregate",
+        "series": [
+            {
+                "field": "avg_kda",
+                "name": "KDA",
+                "max": 8,
+                "color": "#ef4444"
+            },
+            {
+                "field": "avg_gpm",
+                "name": "分均金币",
+                "max": 1000,
+                "color": "#f59e0b"
+            },
+            {
+                "field": "avg_damage",
+                "name": "输出能力",
+                "max": 50000,
+                "color": "#3b82f6"
+            },
+            {
+                "field": "avg_kp",
+                "name": "参团率",
+                "max": 1,
+                "color": "#10b981"
+            },
+            {
+                "field": "avg_vision",
+                "name": "视野贡献",
+                "max": 80,
+                "color": "#8b5cf6"
+            }
+        ]
+    }
+}

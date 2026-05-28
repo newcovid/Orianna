@@ -1,0 +1,64 @@
+{
+    "manifest": {
+        "id": "recent_20_efficiency_kda_line",
+        "name": "伤转率与 KDA 趋势对比",
+        "description": "展示最近 20 场比赛中，伤害转化率与 KDA 的波动关系",
+        "version": "1.0.0",
+        "author": "Orianna User",
+        "tags": [
+            "折线图",
+            "多维度",
+            "伤转率",
+            "KDA"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-2",
+        "mount": [
+            "dashboard"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "limit": 20
+        },
+        "metrics": [
+            {
+                "field": "damage_gold_efficiency",
+                "alias": "efficiency"
+            },
+            {
+                "field": "kda",
+                "alias": "match_kda"
+            },
+            {
+                "field": "game_creation",
+                "alias": "time"
+            }
+        ],
+        "sortBy": {
+            "field": "time",
+            "direction": "ASC"
+        }
+    },
+    "visualization": {
+        "type": "line",
+        "xAxis": {
+            "field": "time",
+            "format": "index"
+        },
+        "series": [
+            {
+                "field": "efficiency",
+                "name": "伤害转化率",
+                "color": "#f43f5e"
+            },
+            {
+                "field": "match_kda",
+                "name": "KDA",
+                "color": "#3b82f6"
+            }
+        ]
+    }
+}

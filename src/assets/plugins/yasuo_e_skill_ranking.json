@@ -1,0 +1,49 @@
+{
+    "manifest": {
+        "id": "yasuo_e_skill_ranking",
+        "name": "快乐风男：E 技能施放排行",
+        "description": "使用亚索时，场均施放 E 技能（踏前斩）的频率",
+        "version": "1.0.0",
+        "author": "Orianna Windwalker",
+        "tags": [
+            "英雄专项",
+            "亚索",
+            "排行榜"
+        ]
+    },
+    "layout": {
+        "grid": "col-span-1",
+        "mount": [
+            "compare"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_games",
+        "filters": {
+            "championId": 157,
+            "limit": 20
+        },
+        "metrics": [
+            {
+                "field": "spell3_casts",
+                "aggregate": "avg",
+                "alias": "avg_e_casts"
+            }
+        ],
+        "sortBy": {
+            "field": "avg_e_casts",
+            "direction": "DESC"
+        }
+    },
+    "visualization": {
+        "type": "list",
+        "compareMode": "aggregate",
+        "series": [
+            {
+                "field": "avg_e_casts",
+                "name": "场均 E 释放次数",
+                "color": "#38bdf8"
+            }
+        ]
+    }
+}

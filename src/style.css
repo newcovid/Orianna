@@ -1,0 +1,109 @@
+/* src/style.css */
+@import "tailwindcss";
+
+/* ========================================== */
+/* 关键修复：覆盖 Tailwind v4 默认的系统级暗色模式，强制改为 Class 驱动 */
+/* ========================================== */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-primary: #1E293B;
+    --color-accent: #38BDF8;
+}
+
+:root {
+    font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* ========================================== */
+    /* 原生桌面化体验改造 (Native Desktop Experience) */
+    /* ========================================== */
+
+    /* 1. 禁用全局文本选中（防止拖拽出现蓝色背景遮罩） */
+    -webkit-user-select: none;
+    user-select: none;
+
+    /* 2. 禁用图像、链接等元素的默认拖拽行为（防止鼠标把图片拖出来） */
+    -webkit-user-drag: none;
+
+    /* 3. 禁用点击高亮色（消除不必要的网页触控反馈） */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ========================================== */
+/* 智能放行策略：恢复输入框应有的交互特权     */
+/* ========================================== */
+input,
+textarea,
+[contenteditable="true"] {
+    /* 允许用户在搜索框和输入框中拖拽光标选中文字 */
+    -webkit-user-select: auto;
+    user-select: auto;
+    /* 允许输入框内的原生内容被拖拽 */
+    -webkit-user-drag: auto;
+}
+
+/* 提取全局 UI 组件样式，方便所有页面复用 */
+@layer components {
+    .ui-card {
+        @apply bg-white dark:bg-[#1a1a1a] rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 transition-all;
+    }
+
+    .ui-select {
+        @apply w-full bg-gray-50 dark:bg-[#111111] border border-gray-200 dark:border-gray-700 rounded-xl px-3 py-2 text-sm text-gray-700 dark:text-gray-300 outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all cursor-pointer;
+    }
+
+    .ui-btn {
+        @apply px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2;
+    }
+
+    .ui-btn-primary {
+        @apply bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-500/20;
+    }
+
+    /* 联合接管所有滚动条样式，彻底清理各类溢出白边和尺寸问题 */
+    .ui-scrollbar::-webkit-scrollbar,
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .ui-scrollbar::-webkit-scrollbar-track,
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .ui-scrollbar::-webkit-scrollbar-thumb,
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+    }
+
+    /* 将滚动条十字交叉角的色块设为透明，消灭白色正方形 BUG */
+    .ui-scrollbar::-webkit-scrollbar-corner,
+    .custom-scrollbar::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+}
+
+/* 战绩卡片展开/收起动画 */
+.match-expand-enter-active {
+  transition: max-height 0.25s ease, opacity 0.2s ease;
+  max-height: 600px;
+  overflow: hidden;
+}
+.match-expand-leave-active {
+  transition: max-height 0.2s ease, opacity 0.15s ease;
+  overflow: hidden;
+}
+.match-expand-enter-from,
+.match-expand-leave-to {
+  max-height: 0;
+  opacity: 0;
+}

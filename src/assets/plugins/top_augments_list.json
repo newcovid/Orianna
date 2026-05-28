@@ -1,0 +1,49 @@
+{
+    "manifest": {
+        "id": "top_augments_list",
+        "name": "最爱符文 TOP10",
+        "description": "最近 20 场斗魂竞技场与大乱斗中最常选择的强化符文",
+        "version": "1.0.0"
+    },
+    "layout": {
+        "grid": "col-span-1",
+        "mount": [
+            "dashboard"
+        ]
+    },
+    "dataQuery": {
+        "entity": "match_augments",
+        "filters": {
+            "limit": 20,
+            "queueId": [
+                1700,
+                2400
+            ]
+        },
+        "groupBy": [
+            "augment_id"
+        ],
+        "metrics": [
+            {
+                "field": "augment_id",
+                "aggregate": "count",
+                "alias": "pick_count"
+            }
+        ],
+        "sortBy": {
+            "field": "pick_count",
+            "direction": "DESC"
+        },
+        "outputLimit": 10
+    },
+    "visualization": {
+        "type": "list",
+        "categoryField": "augment_id",
+        "series": [
+            {
+                "field": "pick_count",
+                "name": "选取次数"
+            }
+        ]
+    }
+}
