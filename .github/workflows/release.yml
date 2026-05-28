@@ -1,0 +1,73 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Rust stable
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Rust cache
+        uses: swatinem/rust-cache@v2
+        with:
+          workspaces: './src-tauri -> target'
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Extract version from tag
+        id: version
+        shell: bash
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Sync version to package.json
+        uses: jossef/action-set-json-field@v2
+        with:
+          file: package.json
+          field: version
+          value: ${{ steps.version.outputs.VERSION }}
+
+      - name: Sync version to tauri.conf.json
+        uses: jossef/action-set-json-field@v2
+        with:
+          file: src-tauri/tauri.conf.json
+          field: version
+          value: ${{ steps.version.outputs.VERSION }}
+
+      - name: Build Tauri app
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: 'Orianna ${{ github.ref_name }}'
+          releaseBody: |
+            ## Orianna ${{ github.ref_name }}
+
+            英雄联盟对局数据分析工具。
+
+            ### 下载说明
+            - **Orianna_x.x.x_x64-setup.exe** — Windows 安装程序（推荐）
+            - **Orianna_x.x.x_x64_en-US.msi** — Windows MSI 安装包
+
+            > 首次安装时 Windows 可能弹出 SmartScreen 警告，点击"仍要运行"即可。
+          releaseDraft: true
+          prerelease: false
