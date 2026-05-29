@@ -67,7 +67,25 @@ jobs:
             ### 下载说明
             - **Orianna_x.x.x_x64-setup.exe** — Windows 安装程序（推荐）
             - **Orianna_x.x.x_x64_en-US.msi** — Windows MSI 安装包
+            - **Orianna_x.x.x_x64-portable.zip** — 便携版（解压即用，无需安装）
 
-            > 首次安装时 Windows 可能弹出 SmartScreen 警告，点击"仍要运行"即可。
-          releaseDraft: true
+            > 首次运行时 Windows 可能弹出 SmartScreen 警告，点击"仍要运行"即可。
+            > 便携版需要系统已安装 [WebView2 运行时](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)（Windows 10/11 通常已自带）。
+          releaseDraft: false
           prerelease: false
+
+      - name: Create portable zip
+        shell: pwsh
+        run: |
+          $version = "${{ steps.version.outputs.VERSION }}"
+          $dir = "Orianna-${version}-portable"
+          New-Item -ItemType Directory -Path $dir
+          Copy-Item "src-tauri/target/release/Orianna.exe" $dir/
+          Get-ChildItem "src-tauri/target/release/*.dll" -ErrorAction SilentlyContinue | Copy-Item -Destination $dir/
+          Compress-Archive -Path $dir -DestinationPath "${dir}.zip"
+
+      - name: Upload portable zip to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: "Orianna-${{ steps.version.outputs.VERSION }}-portable.zip"

@@ -2,6 +2,19 @@
 
 英雄联盟对局数据分析桌面客户端。
 
+## 下载
+
+前往 **[Releases](https://github.com/newcovid/Orianna/releases/latest)** 页面下载最新版本：
+
+| 文件 | 说明 |
+|---|---|
+| `Orianna_x.x.x_x64-setup.exe` | Windows 安装程序（推荐） |
+| `Orianna_x.x.x_x64_en-US.msi` | Windows MSI 安装包 |
+| `Orianna_x.x.x_x64-portable.zip` | 便携版（解压即用，无需安装） |
+
+> 首次运行时 Windows 可能弹出 SmartScreen 警告，点击"仍要运行"即可。
+> 便携版需要系统已安装 [WebView2 运行时](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)（Windows 10/11 通常已自带）。
+
 ## 快速开始
 
 ### 环境要求
