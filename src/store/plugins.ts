@@ -65,6 +65,24 @@ export const usePluginStore = defineStore('plugins', () => {
         }
     };
 
+    const importMultiplePlugins = async (fileContents: string[]): Promise<{ success: number; fail: number }> => {
+        let success = 0;
+        let fail = 0;
+        for (const content of fileContents) {
+            const ok = await importExternalPlugin(content);
+            if (ok) success++;
+            else fail++;
+        }
+        return { success, fail };
+    };
+
+    const exportPluginAsJson = (id: string): string | null => {
+        const plugin = allPlugins.value.find(p => p.manifest.id === id);
+        if (!plugin) return null;
+        const { isCustom: _, ...clean } = plugin;
+        return JSON.stringify(clean, null, 4);
+    };
+
     // 新增：保存通过可视化编辑器修改或克隆的插件
     const saveEditedPlugin = async (plugin: ExtendedPluginConfig, autoEnable: boolean = false) => {
         plugin.isCustom = true; // 经过编辑器保存的一律视为自定义图表
@@ -124,6 +142,8 @@ export const usePluginStore = defineStore('plugins', () => {
         activePlugins,
         loadLocalPlugins,
         importExternalPlugin,
+        importMultiplePlugins,
+        exportPluginAsJson,
         saveEditedPlugin,
         togglePlugin,
         deleteCustomPlugin
